@@ -23,21 +23,30 @@
         const scene = new THREE.Scene()
 
         const camera = new THREE.PerspectiveCamera(120, window.innerWidth / window.innerHeight, 0.1, 100)
-        camera.position.set(0, 1, 3)
+        camera.position.set(-1, -1, -1)
         camera.lookAt(0, 0, 0)
 
-        const axes = new THREE.AxesHelper(1)
+        const axes = new THREE.AxesHelper(1000)
         scene.add(axes)
 
-        const loader = new THREE.TextureLoader()
+        // const loader = new THREE.TextureLoader()
+        // loader.load(
+        //     'equi.png',
+        //     (tex) => {
+        //         tex.mapping = THREE.EquirectangularReflectionMapping
+        //         scene.background = tex
+        //         animate()
+        //     }
+        // )
+
+        const loader = new THREE.CubeTextureLoader()
         loader.load(
-            'equi.png',
+            ['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png'],
             (tex) => {
-                tex.mapping = THREE.EquirectangularReflectionMapping
                 scene.background = tex
                 animate()
             }
-        )
+        );
 
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight
@@ -47,14 +56,17 @@
 
         let keyDown = {}
         window.keyDown = keyDown
-        window.addEventListener('keydown', e => keyDown[e.code] = true);
-        window.addEventListener('keyup', e => keyDown[e.code] = false);
+        window.addEventListener('keydown', e => keyDown[e.key] = true);
+        window.addEventListener('keyup', e => keyDown[e.key] = false);
 
         function animate() {
             requestAnimationFrame(animate)
-            axes.rotation.x += (!!keyDown["KeyA"] - !!keyDown["KeyD"]) * 0.02
-            axes.rotation.y += (!!keyDown["KeyW"] - !!keyDown["KeyS"]) * 0.02
-            axes.rotation.z += (!!keyDown["KeyQ"] - !!keyDown["KeyE"]) * 0.02
+            axes.rotation.x += (!!keyDown["x"] - !!keyDown["X"]) * 0.02
+            axes.rotation.y += (!!keyDown["y"] - !!keyDown["Y"]) * 0.02
+            axes.rotation.z += (!!keyDown["z"] - !!keyDown["Z"]) * 0.02
+
+            if (keyDown["r"]) { axes.rotation.set(0, 0, 0) }
+
             scene.backgroundRotation.copy(axes.rotation)
             renderer.render(scene, camera)
         }
