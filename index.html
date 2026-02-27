@@ -1,20 +1,9 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@v0.182.0/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@v0.182.0/examples/jsm/"
-      }
-    }
-    </script>
-</head>
-
 <body style="margin:0; overflow: hidden">
     <script type="module">
-        import * as THREE from 'three'
+        import * as THREE from './three.module.js'
 
         const renderer = new THREE.WebGLRenderer()
         renderer.setSize(window.innerWidth, window.innerHeight)
